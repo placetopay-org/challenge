@@ -1,0 +1,120 @@
+{
+  "_axios-DrmxFAda.js": {
+    "file": "assets/axios-DrmxFAda.js",
+    "name": "axios"
+  },
+  "_laravel-vapor-CYz-MNB8.js": {
+    "file": "assets/laravel-vapor-CYz-MNB8.js",
+    "name": "laravel-vapor",
+    "imports": [
+      "_axios-DrmxFAda.js"
+    ]
+  },
+  "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-brands-400.eot": {
+    "file": "assets/fa-brands-400-DOJ3d8S2.eot",
+    "src": "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-brands-400.eot"
+  },
+  "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-brands-400.svg": {
+    "file": "assets/fa-brands-400-CUMtpxsL.svg",
+    "src": "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-brands-400.svg"
+  },
+  "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-brands-400.ttf": {
+    "file": "assets/fa-brands-400-Cvq_JjcI.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-brands-400.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-brands-400.woff": {
+    "file": "assets/fa-brands-400-BppY2YH5.woff",
+    "src": "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-brands-400.woff"
+  },
+  "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-brands-400.woff2": {
+    "file": "assets/fa-brands-400-BoGazL5X.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-brands-400.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-light-300.eot": {
+    "file": "assets/fa-light-300-Cjd8zpgO.eot",
+    "src": "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-light-300.eot"
+  },
+  "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-light-300.svg": {
+    "file": "assets/fa-light-300-DPjzRXa1.svg",
+    "src": "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-light-300.svg"
+  },
+  "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-light-300.ttf": {
+    "file": "assets/fa-light-300-BqEkzVTj.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-light-300.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-light-300.woff": {
+    "file": "assets/fa-light-300-DmSVN63B.woff",
+    "src": "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-light-300.woff"
+  },
+  "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-light-300.woff2": {
+    "file": "assets/fa-light-300-JjeHsR9Q.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-light-300.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-regular-400.eot": {
+    "file": "assets/fa-regular-400-pAvjlHJy.eot",
+    "src": "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-regular-400.eot"
+  },
+  "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-regular-400.svg": {
+    "file": "assets/fa-regular-400-D7GIZYaW.svg",
+    "src": "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-regular-400.svg"
+  },
+  "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-regular-400.ttf": {
+    "file": "assets/fa-regular-400-DLWfwCKD.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-regular-400.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-regular-400.woff": {
+    "file": "assets/fa-regular-400-Do3gprBG.woff",
+    "src": "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-regular-400.woff"
+  },
+  "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-regular-400.woff2": {
+    "file": "assets/fa-regular-400-BMnJ9gFZ.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-regular-400.woff2"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-0d49KVsB.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "_axios-DrmxFAda.js",
+      "_laravel-vapor-CYz-MNB8.js"
+    ],
+    "css": [
+      "assets/app-COqajI5L.css"
+    ]
+  },
+  "resources/js/challenge.js": {
+    "file": "assets/challenge-BGHm-33J.js",
+    "name": "challenge",
+    "src": "resources/js/challenge.js",
+    "isEntry": true,
+    "imports": [
+      "_axios-DrmxFAda.js",
+      "_laravel-vapor-CYz-MNB8.js"
+    ]
+  },
+  "resources/js/threeds/method-url.js": {
+    "file": "assets/method-url-DQlrKqjN.js",
+    "name": "method-url",
+    "src": "resources/js/threeds/method-url.js",
+    "isEntry": true,
+    "imports": [
+      "_axios-DrmxFAda.js"
+    ]
+  },
+  "resources/sass/app.scss": {
+    "file": "assets/app-ngbbEIsM.css",
+    "src": "resources/sass/app.scss",
+    "isEntry": true
+  },
+  "resources/sass/challenge.scss": {
+    "file": "assets/challenge-0w5zGyCb.css",
+    "src": "resources/sass/challenge.scss",
+    "isEntry": true
+  },
+  "resources/sass/tours.scss": {
+    "file": "assets/tours-C0pnI5UL.css",
+    "src": "resources/sass/tours.scss",
+    "isEntry": true
+  }
+}
