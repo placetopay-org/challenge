@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 - Historical match by device rule is added. ([#1531](https://bitbucket.org/placetopay/threedsecure-acs/pull-requests/1531))
 - Invalid transactions module. ([#1493](https://bitbucket.org/placetopay/threedsecure-acs/pull-requests/1493))
 
+### Updated
+- Store location data taken from IP in transaction details view and when we create a transaction. ([#1486](https://bitbucket.org/placetopay/threedsecure-acs/pull-requests/1486))
+
 ### Changed
 - Show the createdBy only if it exists in the guilty view. ([#1515](https://bitbucket.org/placetopay/threedsecure-acs/pull-requests/1515))
 

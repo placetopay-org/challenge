@@ -51,9 +51,11 @@
 
     <div class="row">
         <div class="col d-flex flex-column col-12 col-xl-6">
-            @if($aReq->browserIP)
-                <ip-localization-map ip="{{ $transaction->aReq->browserIP }}"
-                    token="{{ config('geolocation.maps.google.apiKey') }}"></ip-localization-map>
+            @if($aReq->browserIP && $transaction->hasIpInformation())
+                <ip-localization-map
+                        :location-data='@json($transaction->presenter()->location_data)'
+                        token="{{ config('geolocation.maps.google.apiKey') }}">
+                </ip-localization-map>
             @endif
         </div>
         <div class="col d-flex flex-column col-12 col-xl-6">

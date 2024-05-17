@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\Transaction;
 use App\Models\User;
 use ErrorException;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -256,5 +257,19 @@ abstract class TestCase extends BaseTestCase
         }
 
         throw new ErrorException('Call to undefined method ' . __CLASS__ . '::' . $name);
+    }
+
+    public function assertIPLocationData(Transaction $transaction): void
+    {
+        $ipInformation = $transaction->getIpInformation();
+
+        $this->assertSame($transaction->aReq->browserIP, $ipInformation['ip']);
+        $this->assertNotNull($ipInformation['city']);
+        $this->assertNotNull($ipInformation['region']);
+        $this->assertNotNull($ipInformation['latitude']);
+        $this->assertNotNull($ipInformation['timezone']);
+        $this->assertNotNull($ipInformation['longitude']);
+        $this->assertTrue($ipInformation['sameYearProcessed']);
+        $this->assertNotNull($ipInformation['created_at']);
     }
 }

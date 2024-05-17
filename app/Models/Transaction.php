@@ -12,6 +12,7 @@ use App\Helpers\ExchangeRateHelper;
 use App\Helpers\IssuerSettingHelper;
 use App\Helpers\Truncator\Email;
 use App\Models\Concerns\HasChallengeStatus;
+use App\Models\Concerns\HasSchemalessAttributes;
 use App\Models\Concerns\HasTimezonedTimestamps;
 use App\Presenters\TransactionPresenter;
 use App\ThreeDS\Messages\Message;
@@ -76,6 +77,7 @@ use PlacetoPay\ThreeDsSecureBase\Constants\Versions\V220\TransactionStatus;
  * @property Challenge|null challenge
  * @property Issuer issuer
  * @property Card card
+ * @property mixed $extra_attributes
  */
 class Transaction extends Model implements ModelMetricContract, Filterable
 {
@@ -84,6 +86,7 @@ class Transaction extends Model implements ModelMetricContract, Filterable
     use HasTimezonedTimestamps;
     use HasFactory;
     use HasFilters;
+    use HasSchemalessAttributes;
 
     private int $filterLimitInDays = 1;
 
@@ -123,10 +126,12 @@ class Transaction extends Model implements ModelMetricContract, Filterable
         'device_id',
         'franchise_id',
         'current_message_created_at',
+        'extra_attributes',
     ];
 
     protected $casts = [
         'purchase_amount' => 'integer',
+        'extra_attributes' => 'array',
     ];
 
     protected string $presenter = TransactionPresenter::class;
@@ -654,5 +659,20 @@ class Transaction extends Model implements ModelMetricContract, Filterable
         $authUser = Auth::user();
 
         return isset($this::$logCauser) ? $authUser->{$this::$logCauser} : $authUser->email;
+    }
+
+    public function hasExtraAttributes(): bool
+    {
+        return !empty($this->extra_attributes);
+    }
+
+    public function hasIpInformation(): bool
+    {
+        return !is_null($this->getIpInformation());
+    }
+
+    public function getIpInformation(): array|null
+    {
+        return $this->extra_attributes->ipInformation;
     }
 }

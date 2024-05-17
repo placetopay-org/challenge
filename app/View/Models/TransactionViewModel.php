@@ -2,6 +2,7 @@
 
 namespace App\View\Models;
 
+use App\Actions\UpdateTransactionExtraAttributesAction;
 use App\FraudControl\Constants\RiskScores;
 use App\Models\Transaction;
 use App\Models\TransactionScore;
@@ -12,6 +13,8 @@ use Illuminate\Support\Str;
 class TransactionViewModel extends BasicTransactionViewModel
 {
     private bool $exportable = false;
+    private array $message;
+    private ?AReq $aReq;
 
     public function __construct(Transaction $transaction)
     {
@@ -76,6 +79,26 @@ class TransactionViewModel extends BasicTransactionViewModel
 
     public function toArray(): array
     {
+        $this->resolveTransaction();
+        $this->updateExtraAttributes();
+
+        return [
+            'transaction' => $this->transaction,
+            'scores' => $this->scores(),
+            'messages' => $this->message,
+            'indicators' => $this->indicators(),
+            'aReq' => $this->aReq,
+            'disputeHistories' => $this->disputeHistories(),
+            'exportable' => $this->exportable,
+            'reservedFields' => $this->reservedFields(),
+            'billAddr' => $this->billAddr($this->aReq),
+            'payer' => $this->payer($this->aReq),
+            'riskIndicator' => $this->riskIndicator($this->aReq),
+        ];
+    }
+
+    public function resolveTransaction(): void
+    {
         $this->transaction->load([
             'issuer:id,name,slug,country_id,logo',
             'issuer.country:id,alpha_3_code',
@@ -103,22 +126,8 @@ class TransactionViewModel extends BasicTransactionViewModel
             },
         ]);
 
-        $message = $this->messages();
-        $aReq = $this->aReq();
-
-        return [
-            'transaction' => $this->transaction,
-            'scores' => $this->scores(),
-            'messages' => $message,
-            'indicators' => $this->indicators(),
-            'aReq' => $aReq,
-            'disputeHistories' => $this->disputeHistories(),
-            'exportable' => $this->exportable,
-            'reservedFields' => $this->reservedFields(),
-            'billAddr' => $this->billAddr($aReq),
-            'payer' => $this->payer($aReq),
-            'riskIndicator' => $this->riskIndicator($aReq),
-        ];
+        $this->message = $this->messages();
+        $this->aReq = $this->aReq();
     }
 
     private function billAddr(AReq|null $aReq): array
@@ -215,5 +224,13 @@ class TransactionViewModel extends BasicTransactionViewModel
         }
 
         return $riskData;
+    }
+
+    public function updateExtraAttributes(): void
+    {
+        if ($this?->aReq && $this->aReq?->browserIP && !$this->transaction->hasIpInformation()) {
+            UpdateTransactionExtraAttributesAction::execute($this->transaction, $this->aReq->browserIP);
+            $this->transaction->refresh();
+        }
     }
 }
