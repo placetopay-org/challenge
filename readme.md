@@ -19,7 +19,7 @@ Los datos de geolocalización asociados a la transacción en el transcurso del t
 
 #### A partir de este momento:
 - Eres revisor/a del Pull Request/Code Review)
-- Tienes 10 minutos desde el momento de ser compartido el archivo PDF
+- Tienes 20 minutos desde el momento de comenzar ha analizar.
 - Verbalizar los pensamientos que consideres relevantes (correcciones, mejoras,  sugerencias)
 
 #### El ejercicio termina:
