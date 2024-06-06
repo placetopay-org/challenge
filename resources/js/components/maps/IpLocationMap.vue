@@ -6,22 +6,31 @@
             <tr>
                 <th class="text-uppercase label-detail">IP</th>
                 <td class="detail detail-shipping">
-                    {{ (this.ip ?? '') }}
+                    {{ location.ip }}
                 </td>
             </tr>
             <tr>
-                <th class="text-uppercase label-detail">{{trans('common.place')}}</th>
+                <th class="text-uppercase label-detail">{{ trans('common.place') }}</th>
                 <td class="detail detail-shipping">
                     {{ location.countryCode.toUpperCase() }}
-                    {{ (location.region.toUpperCase() ? ' - ' + location.region.toUpperCase() : '') }}
-                    {{ (location.city.toUpperCase() ? location.city.toUpperCase() : '') }}
+                    {{ (location.region ? ' - ' + location.region.toUpperCase() : '') }}
+                    {{ (location.city ? location.city.toUpperCase() : '') }}
                 </td>
+            </tr>
+            <tr>
+              <th class="text-uppercase label-detail">{{  trans('authentications.messages.geolocation_date')  }} </th>
+              <td class="detail detail-shipping">
+                {{ location.created_at }}
+              </td>
             </tr>
             </tbody>
         </table>
         <div>
           <div style="min-height: 214px">
             <img :src="urlMapStatic" :class="mapClasses" alt="map"/>
+          </div>
+          <div class="w-100" style="margin-left: 5px;" v-cloak>
+            <p v-if="!location.sameYearProcessed" style="font-size: 0.8em">{{ trans('authentications.messages.geolocation_message') }}</p>
           </div>
         </div>
       </template>
@@ -35,14 +44,13 @@
 </template>
 
 <script>
-const ROUTE_PATH = '/api/ip/location'
 
 export default {
 name: 'IpLocationMap',
 props: {
-  ip: {
-    type: String,
-    default: ''
+  locationData: {
+    type: Object,
+    required: true
   },
   token: {
     type: String,
@@ -97,24 +105,10 @@ computed: {
   }
 },
 created () {
-  this.getLocationInfo()
-},
-methods: {
-  getLocationInfo () {
-    window.axios.get(ROUTE_PATH, {
-      params: {
-        ip: this.ip
-      }
-    }).then(({ data: { information } }) => {
-      this.location = information
-
-      if (this.location.latitude && this.location.longitude) {
-        this.showMap = true
-      }
-    }).catch(error => {
-      this.error = error.message
-    })
+  this.location = this.locationData
+  if (this.location.latitude && this.location.longitude) {
+    this.showMap = true
   }
-}
+},
 }
 </script>

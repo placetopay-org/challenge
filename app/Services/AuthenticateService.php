@@ -8,6 +8,7 @@ use App\Events\NewTransactionMessage;
 use App\Exceptions\ThreeDSException;
 use App\Helpers\Environment;
 use App\Helpers\Truncator\TruncatorHelper;
+use App\Jobs\UpdateTransactionExtraAttributes;
 use App\Jobs\VerifyTransactionWithoutFirstCReq;
 use App\Models\Card;
 use App\Models\CardRange;
@@ -100,6 +101,10 @@ abstract class AuthenticateService
         }
 
         $transaction = $this->createNewTransaction($aReq);
+
+        if ($transaction->isBrw() && $aReq->browserIP) {
+            dispatch(new UpdateTransactionExtraAttributes($transaction, $aReq->browserIP));
+        }
 
         $this->response = $this->authenticationSteps($aReq, $transaction)->response();
 

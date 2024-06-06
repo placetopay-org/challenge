@@ -5,7 +5,6 @@ use App\Http\Controllers\Api\Admin\TourController;
 use App\Http\Controllers\Api\CardNumberController;
 use App\Http\Controllers\Api\EmailController;
 use App\Http\Controllers\Api\FiltersController;
-use App\Http\Controllers\Api\GeolocationController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\V1\AuthenticateController;
 use App\Http\Controllers\Api\V1\ChallengeController;
@@ -102,9 +101,6 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::get('settings/select-settings', [SettingController::class, 'selectSettings'])
         ->name('api.settings.select.settings');
-
-    Route::get('ip/location', [GeolocationController::class, 'getLocation'])
-        ->name('api.ip.location');
 
     Route::post('reports', [ReportController::class, 'store'])
         ->name('api.reports.store');

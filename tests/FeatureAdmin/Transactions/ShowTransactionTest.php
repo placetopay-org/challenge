@@ -97,6 +97,8 @@ class ShowTransactionTest extends TestCase
 
         $transaction = $this->createTransaction(MessageVersion::V_220);
 
+        $this->assertEmpty($transaction->extra_attributes);
+
         $this->withAllowPolicy($user->currentProfile()->id, Issuer::class, 'issuers');
 
         $response = $this->actingAs($user)
@@ -157,6 +159,9 @@ class ShowTransactionTest extends TestCase
         $response->assertSeeText(trans("fields.device_channel.{$transaction->device_channel}"));
 
         $response->assertSeeText(trans("fields.message_category.{$transaction->message_category}"));
+
+        $transaction->refresh();
+        $this->assertIPLocationData($transaction);
     }
 
     /**
@@ -182,6 +187,9 @@ class ShowTransactionTest extends TestCase
 
         $response->assertOk();
         $response->assertViewIs('admin.transactions.show');
+
+        $transaction->refresh();
+        $this->assertIPLocationData($transaction);
     }
 
     /**
@@ -202,6 +210,9 @@ class ShowTransactionTest extends TestCase
 
         $response->assertOk();
         $response->assertViewIs('admin.transactions.show');
+
+        $transaction->refresh();
+        $this->assertIPLocationData($transaction);
     }
 
     /**
@@ -219,6 +230,9 @@ class ShowTransactionTest extends TestCase
             ->get(route('admin.transactions.show', $transaction));
 
         $response->assertNotFound();
+
+        $transaction->refresh();
+        $this->assertEmpty($transaction->extra_attributes);
     }
 
     /**
@@ -275,6 +289,8 @@ class ShowTransactionTest extends TestCase
 
         $transaction = $this->createTransaction(MessageVersion::V_220);
 
+        $this->assertEmpty($transaction->extra_attributes);
+
         Dispute::factory()->{$status}()->create(['transaction_id' => $transaction->id]);
 
         $response = $this->get(route('admin.transactions.show', $transaction));
@@ -288,6 +304,9 @@ class ShowTransactionTest extends TestCase
 
                 return !empty($indicator);
             });
+
+        $transaction->refresh();
+        $this->assertIPLocationData($transaction);
     }
 
     /**
@@ -377,6 +396,9 @@ class ShowTransactionTest extends TestCase
         foreach ($messages as $message) {
             $this->assertStringContainsString(trans("authentications.messages.{$message}.description"), $dom->getBody());
         }
+
+        $transaction->refresh();
+        $this->assertIPLocationData($transaction);
     }
 
     /**
@@ -429,6 +451,9 @@ class ShowTransactionTest extends TestCase
             . ' ' . strtolower(RuleOperators::trans(RuleOperators::EQ))
             . ' ' . now()->format('Ymd'),
         ]);
+
+        $transaction->refresh();
+        $this->assertIPLocationData($transaction);
     }
 
     /**
@@ -780,6 +805,9 @@ class ShowTransactionTest extends TestCase
         $this->assertStringNotContainsString($removableContent, $body);
         $this->assertStringContainsString($errorWithoutJson, $body);
         $this->assertStringContainsString($errorWithWrongJson, $body);
+
+        $transaction->refresh();
+        $this->assertIPLocationData($transaction);
     }
 
     /**

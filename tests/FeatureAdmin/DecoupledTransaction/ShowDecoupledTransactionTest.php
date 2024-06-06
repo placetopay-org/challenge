@@ -29,10 +29,15 @@ class ShowDecoupledTransactionTest extends TestCase
             'trans_status' => TransactionStatus::CHALLENGE_REQUIRED_DECOUPLE,
         ]);
 
+        $this->assertEmpty($transaction->extra_attributes);
+
         $response = $this->actingAs($user)
             ->get(route('admin.decoupleTransactions.show', $transaction));
 
         $response->assertForbidden();
+
+        $transaction->refresh();
+        $this->assertEmpty($transaction->extra_attributes);
     }
 
     /**
@@ -44,9 +49,12 @@ class ShowDecoupledTransactionTest extends TestCase
             'trans_status' => TransactionStatus::CHALLENGE_REQUIRED_DECOUPLE,
         ]);
 
+        $this->assertEmpty($transaction->extra_attributes);
+
         $response = $this->get(route('admin.decoupleTransactions.show', $transaction));
 
         $response->assertStatus(302)->assertRedirect(route('login'));
+        $this->assertEmpty($transaction->extra_attributes);
     }
 
     /**
@@ -60,6 +68,8 @@ class ShowDecoupledTransactionTest extends TestCase
             'trans_status' => TransactionStatus::CHALLENGE_REQUIRED_DECOUPLE,
         ]);
 
+        $this->assertEmpty($transaction->extra_attributes);
+
         $this->withAllowPolicy($userA->currentProfile()->id, Issuer::class, 'issuers');
 
         $response = $this->actingAs($userA)
@@ -68,6 +78,9 @@ class ShowDecoupledTransactionTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('admin.decoupled_transactions.show');
         $response->assertViewHasAll(['transaction', 'messages', 'aReq']);
+
+        $transaction->refresh();
+        $this->assertIPLocationData($transaction);
     }
 
     /**
@@ -117,6 +130,8 @@ class ShowDecoupledTransactionTest extends TestCase
             'trans_status' => TransactionStatus::CHALLENGE_REQUIRED_DECOUPLE,
         ]);
 
+        $this->assertEmpty($transaction->extra_attributes);
+
         $this->withAllowPolicy($userA->currentProfile()->id, Issuer::class, 'issuers');
 
         $response = $this->actingAs($userA)
@@ -125,6 +140,9 @@ class ShowDecoupledTransactionTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('admin.decoupled_transactions.show');
         $response->assertSee(trans('common.release_user'));
+
+        $transaction->refresh();
+        $this->assertIPLocationData($transaction);
     }
 
     /**
@@ -138,6 +156,8 @@ class ShowDecoupledTransactionTest extends TestCase
             'trans_status' => TransactionStatus::CHALLENGE_REQUIRED_DECOUPLE,
         ]);
 
+        $this->assertEmpty($transaction->extra_attributes);
+
         $this->withAllowPolicy($userA->currentProfile()->id, Issuer::class, 'issuers');
 
         $response = $this->actingAs($userA)
@@ -146,5 +166,8 @@ class ShowDecoupledTransactionTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('admin.decoupled_transactions.show');
         $response->assertSee(trans('common.resolve_authentication'));
+
+        $transaction->refresh();
+        $this->assertIPLocationData($transaction);
     }
 }

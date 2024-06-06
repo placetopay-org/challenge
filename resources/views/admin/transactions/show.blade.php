@@ -76,9 +76,9 @@
                     <h1 class="subhead my-2">@lang('titles.geolocation_by_ip')</h1>
                 @endif
                 <div class="card p-2 h-100 table-responsive mb-0">
-                    @if($aReq && $aReq->browserIP)
+                    @if($aReq && $aReq->browserIP && $transaction->hasIpInformation())
                         <ip-localization-map
-                                ip="{{ $aReq->browserIP }}"
+                                :location-data='@json($transaction->presenter()->location_data)'
                                 token="{{ config('geolocation.maps.google.apiKey') }}">
                         </ip-localization-map>
                     @endif
@@ -109,11 +109,11 @@
                     <h1 class="subhead my-2">@lang('titles.geolocation_by_ip')</h1>
                 @endif
                 <div class="card p-2 h-100 table-responsive mb-0">
-                    @if($aReq && $aReq->browserIP)
+                    @if($aReq && $aReq->browserIP && $transaction->hasIpInformation())
                         <ip-localization-map
-                            ip="{{ $aReq->browserIP }}"
-                            token="{{ config('geolocation.maps.google.apiKey') }}"
-                            landscape>
+                                :location-data='@json($transaction->presenter()->location_data)'
+                                token="{{ config('geolocation.maps.google.apiKey') }}"
+                                landscape>
                         </ip-localization-map>
                     @endif
                 </div>

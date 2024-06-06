@@ -3,6 +3,7 @@
 namespace Tests\FeatureApi\V1;
 
 use App\Constants\Brands;
+use App\Constants\Environments;
 use App\Helpers\CardNumber;
 use App\Helpers\Truncator\TruncatorHelper;
 use App\Mocks\CreditCardCases;
@@ -28,10 +29,12 @@ use PlacetoPay\ThreeDsSecureBase\Constants\Common\ThreeDSComponent;
 use PlacetoPay\ThreeDsSecureBase\Constants\Versions\V220\ThreeDSRequestorChallengeIndicator;
 use PlacetoPay\ThreeDsSecureBase\Constants\Versions\V220\TransactionStatus;
 use PlacetoPay\ThreeDsSecureBase\Constants\Versions\V220\TransactionStatusReason;
+use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\Concerns\HasCertificates;
 use Tests\Concerns\HasFranchises;
 use Tests\Concerns\HasIssuerCardRange;
+use Tests\Concerns\LogTestTrait;
 use Tests\Concerns\ProcessingFlows\HasSampleDataBrw;
 use Tests\FieldsProviderTrait;
 use Tests\TestCase;
@@ -56,6 +59,7 @@ class AuthenticateControllerTest extends TestCase
     use HasSampleDataBrw;
     use HasTestRule;
     use HasCertificates;
+    use LogTestTrait;
 
     public const TEST_MESSAGE_TYPE = MessageType::AREQ;
     public const URL_AUTHENTICATE = 'api/v1/authenticate';
@@ -299,6 +303,9 @@ class AuthenticateControllerTest extends TestCase
         $cardholder->phones->each(function ($item) {
             $this->assertTrue(in_array($item->phone, ['3009998877', '5556677']));
         });
+
+        $transaction->refresh();
+        $this->assertIPLocationData($transaction);
     }
 
     /**
@@ -333,6 +340,9 @@ class AuthenticateControllerTest extends TestCase
         $transaction = Transaction::first();
         $this->assertEquals($data['threeDSServerTransID'], $transaction->threeds_server_trans_id);
         $this->assertEquals($data['deviceChannel'], $transaction->device_channel);
+
+        $transaction->refresh();
+        $this->assertIPLocationData($transaction);
     }
 
     /**
@@ -447,6 +457,11 @@ class AuthenticateControllerTest extends TestCase
         $this->assertEquals($data['threeDSServerTransID'], $transaction->threeds_server_trans_id);
         $this->assertEquals($data['deviceChannel'], $transaction->device_channel);
         $this->assertNotNull($transaction->card_id);
+        $transaction->refresh();
+        $this->assertIPLocationData($transaction);
+
+        $transaction->refresh();
+        $this->assertIPLocationData($transaction);
     }
 
     /** @test */
@@ -591,6 +606,7 @@ class AuthenticateControllerTest extends TestCase
         $this->assertDatabaseCount('transactions', 1);
         $this->assertDatabaseHas('transactions', [
             'id' => $transaction->id,
+            'extra_attributes' => null,
         ]);
     }
 
@@ -609,6 +625,9 @@ class AuthenticateControllerTest extends TestCase
         array $requestFields,
         array $transactionFields
     ): void {
+        $this->setLogs(storage_path('logs/laravel-' . date('Y-m-d') . '.log'));
+        $this->cleanLog();
+
         $request = $this->createAReq(array_merge([
             'acctNumber' => $this->cardNumber,
             'messageVersion' => MessageVersion::V_220,
@@ -644,7 +663,15 @@ class AuthenticateControllerTest extends TestCase
         $this->assertDatabaseCount('transactions', 1);
         $this->assertDatabaseHas('transactions', [
             'id' => $transaction->id,
+            'extra_attributes' => null,
         ]);
+
+        $this->assertTraceLog(
+            Environments::TESTING,
+            1,
+            'Failed validation on authentication request',
+            strtoupper(LogLevel::INFO)
+        );
     }
 
     /**

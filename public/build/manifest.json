@@ -71,7 +71,7 @@
     "src": "node_modules/@fortawesome/fontawesome-pro/webfonts/fa-regular-400.woff2"
   },
   "resources/js/app.js": {
-    "file": "assets/app-0d49KVsB.js",
+    "file": "assets/app-DVqWSlmV.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -84,7 +84,7 @@
     ]
   },
   "resources/js/challenge.js": {
-    "file": "assets/challenge-BGHm-33J.js",
+    "file": "assets/challenge-xXfh6Sy7.js",
     "name": "challenge",
     "src": "resources/js/challenge.js",
     "isEntry": true,

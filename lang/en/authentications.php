@@ -106,6 +106,8 @@ return [
         'A' => 'ACS',
     ],
     'messages' => [
+        'geolocation_message' => 'This information was consulted some time after the creation of the transaction.',
+        'geolocation_date' => 'Date on which this information was consulted: ',
         'resolve' => 'The authentication was successfully resolved.',
         'not_resolve' => 'The authentication is not decoupled.',
         'in_process' => 'The authentication is being resolved by another user.',
